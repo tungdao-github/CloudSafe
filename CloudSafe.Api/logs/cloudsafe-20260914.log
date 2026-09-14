@@ -1,0 +1,29 @@
+2026-09-14 10:58:25.189 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUser - null null
+2026-09-14 10:58:25.457 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 10:58:25.493 +07:00 [INF] Route matched with {action = "GetCurrentUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCurrentUser() on controller CloudSafe.Api.Controllers.UserController (CloudSafe.Api).
+2026-09-14 10:58:25.833 +07:00 [INF] Executed DbCommand (42ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM "Users" AS u
+WHERE u."Id" = @__CurrentUserId_0
+LIMIT 1
+2026-09-14 10:58:25.905 +07:00 [INF] Executed DbCommand (13ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Notices" AS n
+WHERE n."UserId" = @__CurrentUserId_0 AND n."Status" = 0
+2026-09-14 10:58:25.919 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType7`1[[CloudSafe.Api.DTOs.CurrentUserDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-09-14 10:58:25.948 +07:00 [INF] Executed action CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api) in 447.9256ms
+2026-09-14 10:58:25.954 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 10:58:25.959 +07:00 [INF] HTTP GET /api/currentUser responded 200 in 703.1681 ms
+2026-09-14 10:58:25.971 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUser - 200 null application/json; charset=utf-8 785.7217ms
+2026-09-14 10:58:26.778 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/fake_workplace_chart_data - null null
+2026-09-14 10:58:26.778 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/project/notice - null null
+2026-09-14 10:58:26.778 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/activities - null null
+2026-09-14 10:58:26.786 +07:00 [INF] HTTP GET /api/fake_workplace_chart_data responded 404 in 2.3938 ms
+2026-09-14 10:58:26.787 +07:00 [INF] HTTP GET /api/project/notice responded 404 in 3.0612 ms
+2026-09-14 10:58:26.787 +07:00 [INF] HTTP GET /api/activities responded 404 in 0.6706 ms
+2026-09-14 10:58:26.788 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/fake_workplace_chart_data - 404 0 null 9.9634ms
+2026-09-14 10:58:26.790 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/project/notice - 404 0 null 11.5337ms
+2026-09-14 10:58:26.792 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/activities - 404 0 null 13.3451ms
+2026-09-14 10:58:26.795 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/fake_workplace_chart_data, Response status code: 404
+2026-09-14 10:58:26.797 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/project/notice, Response status code: 404
+2026-09-14 10:58:26.800 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/activities, Response status code: 404
