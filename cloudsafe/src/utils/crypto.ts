@@ -224,3 +224,48 @@ export async function hybridDecrypt(
   const aesKeyRaw = await rsaDecryptKey(b64ToBuf(encAesKeyB64), privateKey);
   return aesDecrypt(b64ToBuf(ciphertextB64), new Uint8Array(hexToBuf(ivHex)), aesKeyRaw);
 }
+
+/** Alias: import RSA public key từ PEM (dùng trong upload page) */
+export async function importPublicKeyFromPem(pem: string): Promise<CryptoKey> {
+  return importPublicKey(pem);
+}
+
+/** Alias: bufToB64 */
+export const bufToBase64 = bufToB64;
+
+/** Mã hóa file: ArrayBuffer + RSA public key → ciphertext + metadata */
+export async function encryptFile(
+  fileBuffer: ArrayBuffer,
+  publicKey: CryptoKey,
+): Promise<{ ciphertext: ArrayBuffer; encryptedAesKey: string; iv: string; authTag: string }> {
+  const aes = await aesEncrypt(fileBuffer);
+  const encAesKey = await rsaEncryptKey(aes.aesKeyRaw, publicKey);
+  return {
+    ciphertext: aes.ciphertext,
+    encryptedAesKey: bufToB64(encAesKey),
+    iv: bufToB64(aes.iv.buffer),
+    authTag: bufToB64(hexToBuf(aes.authTag)),
+  };
+}
+
+/** Giải mã file: ciphertext + encryptedAesKey (base64) + iv (base64) + RSA private key → plaintext */
+export async function decryptFile(
+  ciphertext: ArrayBuffer,
+  encryptedAesKeyB64: string,
+  ivB64: string,
+  privateKey: CryptoKey,
+): Promise<ArrayBuffer> {
+  const aesKeyRaw = await rsaDecryptKey(b64ToBuf(encryptedAesKeyB64), privateKey);
+  return aesDecrypt(ciphertext, new Uint8Array(b64ToBuf(ivB64)), aesKeyRaw);
+}
+
+/** Tải blob về máy */
+export function downloadBlob(blob: Blob, fileName: string): void {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+}
