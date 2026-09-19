@@ -62,7 +62,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             }
         };
     });
-
+// builder.Services.Configure<FormOptions>(o =>
+// {
+//     o.MultipartBodyLengthLimit = 500 * 1024 * 1024;
+// });
 builder.Services.AddAuthorization();
 
 // CORS — allow Ant Design Pro dev server
