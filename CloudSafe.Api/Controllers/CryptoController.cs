@@ -1,26 +1,14 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text.Json;
 
 namespace CloudSafe.Api.Controllers;
 
-/// <summary>
-/// Server-side encrypt / decrypt — không cần lưu DB, không cần JWT (tùy thầy bật [Authorize])
-/// 
-/// POST /api/crypto/encrypt   — upload file gốc → trả về file.enc + key.json
-/// POST /api/crypto/decrypt   — upload file.enc + key.json → trả về file gốc
-/// </summary>
 [ApiController]
 [Route("api/crypto")]
-// Bỏ [Authorize] nếu muốn public, giữ lại nếu cần đăng nhập
-// [Authorize]
 public class CryptoController : ControllerBase
 {
     // ── POST /api/crypto/encrypt ────────────────────────────────────
-    // Form: file (IFormFile)
-    // Response: ZIP gồm file.enc + key.json   HOẶC trả 2 header link tải riêng
-    // Ở đây trả JSON có 2 field base64 để frontend tự tải — đơn giản nhất
     [HttpPost("encrypt")]
     [RequestSizeLimit(500 * 1024 * 1024)]
     public async Task<IActionResult> Encrypt(IFormFile file)
@@ -28,32 +16,27 @@ public class CryptoController : ControllerBase
         if (file is null || file.Length == 0)
             return BadRequest(new { success = false, message = "Chưa chọn file" });
 
-        // 1. Đọc file gốc
         await using var ms = new MemoryStream();
         await file.CopyToAsync(ms);
         var plainBytes = ms.ToArray();
 
-        // 2. Sinh AES-256 key + IV ngẫu nhiên
-        var aesKey = RandomNumberGenerator.GetBytes(32); // 256-bit
-        var iv = RandomNumberGenerator.GetBytes(12);     // 96-bit nonce cho GCM
+        // Sinh AES-256 key + IV ngẫu nhiên
+        var aesKey = RandomNumberGenerator.GetBytes(32);
+        var iv = RandomNumberGenerator.GetBytes(12);
 
-        // 3. Mã hóa AES-256-GCM
+        // Mã hóa file bằng AES-256-GCM
         var cipherBytes = new byte[plainBytes.Length];
         var authTag = new byte[16];
         using (var aesGcm = new AesGcm(aesKey, 16))
-        {
             aesGcm.Encrypt(iv, plainBytes, cipherBytes, authTag);
-        }
 
-        // 4. Sinh cặp RSA-2048
+        // Sinh RSA-2048 key pair
         using var rsa = RSA.Create(2048);
         var privateKeyPem = rsa.ExportRSAPrivateKeyPem();
-        var publicKeyPem = rsa.ExportRSAPublicKeyPem();
 
-        // 5. Mã hóa AES key bằng RSA-OAEP-SHA256
+        // Mã hóa AES key bằng RSA Public Key
         var encryptedAesKey = rsa.Encrypt(aesKey, RSAEncryptionPadding.OaepSHA256);
 
-        // 6. Build key.json
         var keyJson = JsonSerializer.Serialize(new
         {
             originalName = file.FileName,
@@ -63,11 +46,9 @@ public class CryptoController : ControllerBase
             encryptedAesKeyBase64 = Convert.ToBase64String(encryptedAesKey),
             ivBase64 = Convert.ToBase64String(iv),
             authTagBase64 = Convert.ToBase64String(authTag),
-            // Private key để giải mã — thầy có thể tách ra file riêng nếu muốn
             privateKeyPem,
         }, new JsonSerializerOptions { WriteIndented = true });
 
-        // 7. Trả về JSON chứa 2 blob base64 — frontend dùng để tải về
         return Ok(new
         {
             success = true,
@@ -79,9 +60,6 @@ public class CryptoController : ControllerBase
     }
 
     // ── POST /api/crypto/decrypt ────────────────────────────────────
-    // Form: encFile (IFormFile) — file .enc
-    //       keyFile (IFormFile) — file .key.json (chứa privateKeyPem bên trong)
-    // Response: file gốc (stream)
     [HttpPost("decrypt")]
     [RequestSizeLimit(500 * 1024 * 1024)]
     public async Task<IActionResult> Decrypt(IFormFile encFile, IFormFile keyFile)
@@ -89,7 +67,7 @@ public class CryptoController : ControllerBase
         if (encFile is null || keyFile is null)
             return BadRequest(new { success = false, message = "Cần upload cả file.enc và file.key.json" });
 
-        // 1. Đọc key.json
+        // ── 1. Parse key.json ──────────────────────────────────────
         await using var keyMs = new MemoryStream();
         await keyFile.CopyToAsync(keyMs);
         var keyJson = System.Text.Encoding.UTF8.GetString(keyMs.ToArray());
@@ -98,55 +76,113 @@ public class CryptoController : ControllerBase
         try
         {
             meta = JsonSerializer.Deserialize<KeyMeta>(keyJson,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
-                ?? throw new Exception("key.json rỗng");
+                       new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
+                   ?? throw new Exception("File rỗng");
+
+            if (string.IsNullOrWhiteSpace(meta.EncryptedAesKeyBase64))
+                throw new Exception("Thiếu encryptedAesKeyBase64");
+            if (string.IsNullOrWhiteSpace(meta.IvBase64))
+                throw new Exception("Thiếu ivBase64");
+            if (string.IsNullOrWhiteSpace(meta.AuthTagBase64))
+                throw new Exception("Thiếu authTagBase64");
+            if (string.IsNullOrWhiteSpace(meta.PrivateKeyPem))
+                throw new Exception("Thiếu privateKeyPem");
         }
         catch (Exception ex)
         {
-            return BadRequest(new { success = false, message = "key.json không hợp lệ: " + ex.Message });
+            return BadRequest(new
+            {
+                success = false,
+                stage = "parse_key_json",
+                message = "❌ File key.json không hợp lệ: " + ex.Message
+            });
         }
 
-        // 2. Đọc file .enc
-        await using var encMs = new MemoryStream();
-        await encFile.CopyToAsync(encMs);
-        var cipherBytes = encMs.ToArray();
-
-        // 3. Giải mã AES key bằng RSA private key
+        // ── 2. Giải mã AES key bằng RSA Private Key ────────────────
         byte[] aesKey;
         try
         {
             using var rsa = RSA.Create();
             rsa.ImportFromPem(meta.PrivateKeyPem);
-            var encAesKey = Convert.FromBase64String(meta.EncryptedAesKeyBase64);
-            aesKey = rsa.Decrypt(encAesKey, RSAEncryptionPadding.OaepSHA256);
+            var encAesKeyBytes = Convert.FromBase64String(meta.EncryptedAesKeyBase64);
+            aesKey = rsa.Decrypt(encAesKeyBytes, RSAEncryptionPadding.OaepSHA256);
+        }
+        catch (FormatException)
+        {
+            return BadRequest(new
+            {
+                success = false,
+                stage = "rsa_decrypt",
+                message = "❌ RSA Private Key sai định dạng (không phải PEM hợp lệ)"
+            });
+        }
+        catch (CryptographicException ex)
+        {
+            return BadRequest(new
+            {
+                success = false,
+                stage = "rsa_decrypt",
+                message = "❌ RSA giải mã thất bại — Private Key sai hoặc không khớp với file này. Chi tiết: " + ex.Message
+            });
         }
         catch (Exception ex)
         {
-            return BadRequest(new { success = false, message = "Giải mã RSA thất bại: " + ex.Message });
+            return BadRequest(new
+            {
+                success = false,
+                stage = "rsa_decrypt",
+                message = "❌ Lỗi RSA: " + ex.Message
+            });
         }
 
-        // 4. Giải mã AES-256-GCM
+        // ── 3. Giải mã file bằng AES key ───────────────────────────
+        await using var encMs = new MemoryStream();
+        await encFile.CopyToAsync(encMs);
+        var cipherBytes = encMs.ToArray();
+
         byte[] plainBytes;
         try
         {
             var iv = Convert.FromBase64String(meta.IvBase64);
             var authTag = Convert.FromBase64String(meta.AuthTagBase64);
+
+            if (iv.Length != 12)
+                throw new Exception($"IV phải 12 bytes, nhận {iv.Length} bytes");
+            if (authTag.Length != 16)
+                throw new Exception($"AuthTag phải 16 bytes, nhận {authTag.Length} bytes");
+
             plainBytes = new byte[cipherBytes.Length];
             using var aesGcm = new AesGcm(aesKey, 16);
             aesGcm.Decrypt(iv, cipherBytes, authTag, plainBytes);
         }
         catch (CryptographicException)
         {
-            return BadRequest(new { success = false, message = "Giải mã AES thất bại — file bị sửa hoặc key sai" });
+            // AES-GCM throw CryptographicException khi authTag không khớp
+            // Tức là: file.enc bị sửa, hoặc key.json không thuộc về file.enc này
+            return BadRequest(new
+            {
+                success = false,
+                stage = "aes_decrypt",
+                message = "❌ AES giải mã thất bại — file.enc và file.key.json không khớp nhau, hoặc file.enc đã bị chỉnh sửa"
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new
+            {
+                success = false,
+                stage = "aes_decrypt",
+                message = "❌ Lỗi AES: " + ex.Message
+            });
         }
 
-        // 5. Trả về file gốc
+        // ── 4. Trả về file gốc ─────────────────────────────────────
         var mimeType = meta.MimeType ?? "application/octet-stream";
         var originalName = meta.OriginalName ?? "decrypted_file";
         return File(plainBytes, mimeType, originalName);
     }
 
-    // ── DTO nội bộ ──────────────────────────────────────────────────
+    // ── DTO ────────────────────────────────────────────────────────
     private sealed class KeyMeta
     {
         public string OriginalName { get; set; } = "";

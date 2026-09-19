@@ -1,37 +1,51 @@
+'use client';
 import {
-  FileProtectOutlined, LockOutlined, DownloadOutlined,
+  CopyOutlined, DownloadOutlined, FileProtectOutlined,
+  LockOutlined, ReloadOutlined,
 } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
 import {
-  Alert, Button, Card, Col, Progress, Row, Typography, message,
+  Alert, Button, Card, Col, Divider, Progress,
+  Row, Space, Steps, Tag, Tooltip, Typography, message,
 } from 'antd';
 import React, { useState } from 'react';
 
 const { Text } = Typography;
 
+type Step = 'idle' | 'uploading' | 'encrypting' | 'done' | 'error';
+
+interface EncryptResult {
+  encFileName: string;
+  keyFileName: string;
+  encBase64: string;
+  keyJsonBase64: string;
+  sizeBytes: number;
+  keyPreview: {
+    encryptedAesKeyBase64: string;
+    ivBase64: string;
+    authTagBase64: string;
+    algorithm: string;
+  };
+}
+
 const EncryptPage: React.FC = () => {
-  const [file, setFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [inputFile, setInputFile] = useState<File | null>(null);
+  const [step, setStep] = useState<Step>('idle');
   const [progress, setProgress] = useState(0);
-  const [result, setResult] = useState<{
-    encFileName: string;
-    keyFileName: string;
-    encBase64: string;
-    keyJsonBase64: string;
-  } | null>(null);
+  const [result, setResult] = useState<EncryptResult | null>(null);
+
+  const copy = (text: string) => { navigator.clipboard.writeText(text); message.success('Đã sao chép!'); };
 
   const handleEncrypt = async () => {
-    if (!file) { message.warning('Chưa chọn file!'); return; }
+    if (!inputFile) { message.warning('Chọn file trước!'); return; }
 
-    setLoading(true);
-    setProgress(20);
-    setResult(null);
+    setStep('uploading'); setProgress(15); setResult(null);
 
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', inputFile);
 
-      setProgress(40);
+      setStep('encrypting'); setProgress(40);
 
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
       const res = await fetch('/api/crypto/encrypt', {
@@ -40,7 +54,7 @@ const EncryptPage: React.FC = () => {
         body: formData,
       });
 
-      setProgress(80);
+      setProgress(85);
 
       if (!res.ok) {
         const err = await res.json();
@@ -48,113 +62,188 @@ const EncryptPage: React.FC = () => {
       }
 
       const data = await res.json();
-      setResult(data);
+
+      // Parse key.json để hiển thị preview
+      const keyJsonStr = atob(data.keyJsonBase64);
+      const keyParsed = JSON.parse(keyJsonStr);
+
+      setResult({
+        encFileName: data.encFileName,
+        keyFileName: data.keyFileName,
+        encBase64: data.encBase64,
+        keyJsonBase64: data.keyJsonBase64,
+        sizeBytes: inputFile.size,
+        keyPreview: {
+          encryptedAesKeyBase64: keyParsed.encryptedAesKeyBase64,
+          ivBase64: keyParsed.ivBase64,
+          authTagBase64: keyParsed.authTagBase64,
+          algorithm: keyParsed.algorithm,
+        },
+      });
+
       setProgress(100);
-      message.success('Mã hóa thành công! Tải 2 file về bên dưới.');
+      setStep('done');
+      message.success('Mã hóa thành công! Tải 2 file về bên phải.');
     } catch (e: any) {
+      setStep('error');
       message.error(e.message);
-      setProgress(0);
-    } finally {
-      setLoading(false);
     }
   };
 
   const downloadBase64 = (base64: string, fileName: string, mime: string) => {
-    const byteCharacters = atob(base64);
-    const byteNumbers = new Uint8Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const blob = new Blob([byteNumbers], { type: mime });
-    const url = URL.createObjectURL(blob);
+    const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+    const blob = new Blob([bytes], { type: mime });
     const a = document.createElement('a');
-    a.href = url; a.download = fileName; a.click();
-    URL.revokeObjectURL(url);
+    a.href = URL.createObjectURL(blob);
+    a.download = fileName; a.click();
+    URL.revokeObjectURL(a.href);
   };
 
+  const stepItems = [
+    { title: 'Upload file', description: 'Gửi lên server' },
+    { title: 'Sinh AES-256 Key', description: 'Key ngẫu nhiên + IV' },
+    { title: 'AES-GCM Encrypt', description: 'Mã hóa toàn bộ file' },
+    { title: 'RSA Encrypt AES Key', description: 'Bảo vệ AES key bằng RSA-2048' },
+    { title: 'Hoàn thành', description: 'Tải 2 file về' },
+  ];
+  const stepIdx = { idle: -1, uploading: 0, encrypting: 2, done: 4, error: 4 }[step];
+  const busy = ['uploading', 'encrypting'].includes(step);
+
   return (
-    <PageContainer title="🔒 Mã hóa file" subTitle="Server mã hóa AES-256-GCM + RSA-OAEP, trả về 2 file">
-      <Row gutter={[24, 24]}>
-        <Col xs={24} lg={12}>
-          <Card title="📁 Chọn file cần mã hóa">
-            <input type="file" id="encInput" style={{ display: 'none' }}
-              onChange={e => { setFile(e.target.files?.[0] ?? null); setResult(null); setProgress(0); }} />
+    <PageContainer title="🔒 Mã hóa file" subTitle="Server mã hóa AES-256-GCM + RSA-OAEP-SHA256 — nhận về 2 file">
+      <Row gutter={[20, 20]}>
+        {/* ── LEFT ── */}
+        <Col xs={24} lg={13}>
+          {/* Chọn file */}
+          <Card title="📁 File cần mã hóa" style={{ marginBottom: 16 }}>
+            <input type="file" id="encFileInput" style={{ display: 'none' }}
+              onChange={e => { setInputFile(e.target.files?.[0] ?? null); setResult(null); setStep('idle'); setProgress(0); }} />
             <Button icon={<FileProtectOutlined />} block size="large"
-              onClick={() => document.getElementById('encInput')!.click()}>
-              Chọn file
+              onClick={() => document.getElementById('encFileInput')!.click()}
+              style={{ borderStyle: inputFile ? 'solid' : 'dashed', borderColor: inputFile ? '#1677ff' : undefined }}>
+              {inputFile ? `✓ ${inputFile.name}` : 'Chọn file (docx, pdf, zip, ...)'}
             </Button>
-
-            {file && (
-              <Alert style={{ marginTop: 12 }} type="info" showIcon
-                message={<><Text strong>{file.name}</Text> — {(file.size / 1024).toFixed(1)} KB</>} />
-            )}
-
-            <Button type="primary" size="large" block icon={<LockOutlined />}
-              onClick={handleEncrypt} loading={loading}
-              style={{ marginTop: 16, height: 48 }}>
-              {loading ? 'Đang mã hóa...' : 'Mã hóa (Server-side)'}
-            </Button>
-
-            {progress > 0 && (
-              <Progress percent={progress} status={progress === 100 ? 'success' : 'active'}
-                style={{ marginTop: 12 }} />
+            {inputFile && (
+              <Alert style={{ marginTop: 10 }} type="info" showIcon
+                message={<><Text strong>{inputFile.name}</Text> — {(inputFile.size / 1024).toFixed(1)} KB — {inputFile.type || 'application/octet-stream'}</>} />
             )}
           </Card>
 
-          <Card style={{ marginTop: 16 }} title="ℹ️ Flow">
-            <div style={{ fontSize: 13, lineHeight: 2 }}>
-              1. Upload file gốc lên <Text code>/api/crypto/encrypt</Text><br />
-              2. Server sinh AES-256 key + IV ngẫu nhiên<br />
-              3. Server mã hóa file bằng AES-256-GCM<br />
-              4. Server sinh RSA-2048 key pair<br />
-              5. Server mã hóa AES key bằng RSA Public Key<br />
-              6. Xóa file gốc khỏi server<br />
-              7. Trả về <Text code>file.enc</Text> + <Text code>file.key.json</Text>
+          {/* Giải thích flow */}
+          <Card title="⚙️ Quy trình mã hóa (server-side)" style={{ marginBottom: 16 }}>
+            <div style={{ fontSize: 12, lineHeight: 2.2 }}>
+              <div>① Server sinh <Tag color="blue">AES-256 Key</Tag> + <Tag color="cyan">IV (nonce)</Tag> ngẫu nhiên</div>
+              <div>② Dùng AES-256-GCM mã hóa file → <Tag color="geekblue">file.enc</Tag></div>
+              <div>③ Server sinh cặp <Tag color="purple">RSA-2048</Tag> Public/Private Key</div>
+              <div>④ Dùng RSA Public Key mã hóa AES Key → <Tag color="orange">encryptedAesKey</Tag></div>
+              <div>⑤ Trả về <Tag color="geekblue">file.enc</Tag> + <Tag color="orange">file.key.json</Tag></div>
+            </div>
+            <Divider style={{ margin: '10px 0' }} />
+            <div style={{ fontSize: 11, color: '#8c8c8c' }}>
+              🔐 Để giải mã cần cả 2 file — mất 1 trong 2 là không giải mã được
             </div>
           </Card>
+
+          {/* Encrypt button */}
+          <Button type="primary" size="large" block icon={<LockOutlined />}
+            onClick={handleEncrypt} loading={busy} disabled={busy}
+            style={{ height: 48, fontSize: 15 }}>
+            {busy ? 'Đang mã hóa...' : 'Mã hóa file'}
+          </Button>
+
+          {/* Steps + Progress */}
+          {step !== 'idle' && (
+            <Card style={{ marginTop: 16 }}>
+              <Steps size="small" current={stepIdx}
+                status={step === 'error' ? 'error' : step === 'done' ? 'finish' : 'process'}
+                items={stepItems} style={{ marginBottom: 14 }} />
+              <Progress percent={progress}
+                status={step === 'done' ? 'success' : step === 'error' ? 'exception' : 'active'} />
+              {step === 'error' && (
+                <Alert type="error" showIcon style={{ marginTop: 10 }}
+                  message="Mã hóa thất bại — thử lại hoặc kiểm tra kết nối server" />
+              )}
+            </Card>
+          )}
         </Col>
 
-        <Col xs={24} lg={12}>
-          {result ? (
-            <Card title="✅ Mã hóa thành công — Tải 2 file về">
-              <Alert type="warning" showIcon style={{ marginBottom: 16 }}
-                message="⚠️ Lưu cả 2 file! Mất 1 trong 2 là không giải mã được." />
+        {/* ── RIGHT: Result ── */}
+        <Col xs={24} lg={11}>
+          {!result ? (
+            <Card style={{ height: '100%' }}>
+              <div style={{ textAlign: 'center', padding: '40px 0', color: '#8c8c8c' }}>
+                <LockOutlined style={{ fontSize: 56, marginBottom: 16 }} />
+                <div style={{ fontSize: 14, marginBottom: 24 }}>Kết quả mã hóa sẽ hiện ở đây</div>
+                <div style={{ textAlign: 'left', display: 'inline-block', fontSize: 12 }}>
+                  <div style={{ marginBottom: 6 }}>Sau khi mã hóa nhận được 2 file:</div>
+                  <div>📦 <Text strong>file.ext.enc</Text> — ciphertext (AES-GCM encrypted)</div>
+                  <div>🗝 <Text strong>file.ext.key.json</Text> — chứa:</div>
+                  <div style={{ paddingLeft: 16, color: '#595959' }}>• AES Key (đã mã hóa bởi RSA)</div>
+                  <div style={{ paddingLeft: 16, color: '#595959' }}>• IV / nonce</div>
+                  <div style={{ paddingLeft: 16, color: '#595959' }}>• Auth tag</div>
+                  <div style={{ paddingLeft: 16, color: '#595959' }}>• RSA Private Key</div>
+                  <Divider style={{ margin: '12px 0' }} />
+                  <div>Để giải mã cần:</div>
+                  <div>① File <Text code>.enc</Text></div>
+                  <div>② File <Text code>.key.json</Text></div>
+                </div>
+              </div>
+            </Card>
+          ) : (
+            <Card
+              title={<><LockOutlined style={{ color: '#52c41a' }} /> Mã hóa thành công!</>}
+              extra={<Button size="small" icon={<ReloadOutlined />}
+                onClick={() => { setResult(null); setStep('idle'); setProgress(0); setInputFile(null); }}>Reset</Button>}
+            >
+              <Alert type="success" showIcon style={{ marginBottom: 16 }}
+                message={
+                  <Space>
+                    <span>{result.sizeBytes.toLocaleString()} bytes</span>
+                    <Tag color="blue">AES-256-GCM</Tag>
+                    <Tag color="purple">RSA-OAEP-2048</Tag>
+                  </Space>
+                } />
 
-              <div style={{ padding: 16, background: '#e6f4ff', borderRadius: 8,
-                border: '1px solid #91caff', marginBottom: 12 }}>
-                <div style={{ fontWeight: 600, marginBottom: 8 }}>📦 File mã hóa (ciphertext)</div>
-                <Text code>{result.encFileName}</Text>
-                <Button type="primary" icon={<DownloadOutlined />} block style={{ marginTop: 10 }}
+              {/* Download .enc */}
+              <div style={{ padding: 16, background: '#e6f4ff', borderRadius: 10, border: '1px solid #91caff', marginBottom: 12 }}>
+                <div style={{ fontWeight: 600, marginBottom: 4 }}>📦 File ciphertext (AES encrypted)</div>
+                <div style={{ fontSize: 11, color: '#595959', marginBottom: 6, fontFamily: 'monospace' }}>
+                  <Text code>{result.encFileName}</Text>
+                </div>
+                <div style={{ fontSize: 11, color: '#8c8c8c', marginBottom: 10, fontFamily: 'monospace', wordBreak: 'break-all' }}>
+                  {result.encBase64.slice(0, 72)}...
+                </div>
+                <Button type="primary" icon={<DownloadOutlined />} block
                   onClick={() => downloadBase64(result.encBase64, result.encFileName, 'application/octet-stream')}>
                   Tải về {result.encFileName}
                 </Button>
               </div>
 
-              <div style={{ padding: 16, background: '#fff7e6', borderRadius: 8,
-                border: '1px solid #ffc069' }}>
-                <div style={{ fontWeight: 600, marginBottom: 8 }}>🗝 File key (AES key + RSA private key)</div>
-                <Text code>{result.keyFileName}</Text>
-                <Button icon={<DownloadOutlined />} block style={{ marginTop: 10,
-                  borderColor: '#fa8c16', color: '#fa8c16' }}
+              {/* Download .key.json */}
+              <div style={{ padding: 16, background: '#fff7e6', borderRadius: 10, border: '1px solid #ffc069', marginBottom: 12 }}>
+                <div style={{ fontWeight: 600, marginBottom: 4 }}>🗝 File key (RSA-encrypted AES key + IV)</div>
+                <div style={{ fontSize: 11, color: '#595959', marginBottom: 6 }}>
+                  <Text code>{result.keyFileName}</Text>
+                </div>
+                <div style={{ fontSize: 11, color: '#8c8c8c', marginBottom: 4, fontFamily: 'monospace' }}>
+                  <div>encryptedAesKey: <Text code>{result.keyPreview.encryptedAesKeyBase64.slice(0, 36)}...</Text></div>
+                  <div>iv: <Text code>{result.keyPreview.ivBase64}</Text></div>
+                  <div>authTag: <Text code>{result.keyPreview.authTagBase64}</Text></div>
+                  <div>algo: <Text code>{result.keyPreview.algorithm}</Text></div>
+                </div>
+                <Button icon={<DownloadOutlined />} block
+                  style={{ borderColor: '#fa8c16', color: '#fa8c16' }}
                   onClick={() => downloadBase64(result.keyJsonBase64, result.keyFileName, 'application/json')}>
                   Tải về {result.keyFileName}
                 </Button>
               </div>
 
-              <Alert type="info" showIcon style={{ marginTop: 16 }}
-                message="Để giải mã: vào trang Giải mã → upload file.enc + file.key.json → tải về file gốc" />
-            </Card>
-          ) : (
-            <Card style={{ height: '100%' }}>
-              <div style={{ textAlign: 'center', padding: '60px 0', color: '#8c8c8c' }}>
-                <LockOutlined style={{ fontSize: 56, marginBottom: 16 }} />
-                <div>Kết quả sẽ hiện ở đây sau khi mã hóa</div>
-                <div style={{ marginTop: 16, fontSize: 12 }}>
-                  Sau mã hóa nhận được 2 file:<br />
-                  📦 <Text code>file.ext.enc</Text> — ciphertext<br />
-                  🗝 <Text code>file.ext.key.json</Text> — key giải mã
-                </div>
-              </div>
+              <Alert type="warning" showIcon
+                message="⚠️ Lưu cả 2 file! Mất 1 trong 2 là không giải mã được."
+                style={{ marginBottom: 12 }} />
+
+              <Alert type="info" showIcon
+                message={<span>Vào trang <Text strong>Giải mã</Text> → upload <Text code>.enc</Text> + <Text code>.key.json</Text> → tải về file gốc</span>} />
             </Card>
           )}
         </Col>
