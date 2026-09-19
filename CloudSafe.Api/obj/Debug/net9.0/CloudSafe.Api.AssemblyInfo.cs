@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CloudSafe.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e8832239eb71af9444b9af2785fd315fc1f66bd8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ff9e842f91ab080cf87eb863bc91861b9c1aef80")]
 [assembly: System.Reflection.AssemblyProductAttribute("CloudSafe.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CloudSafe.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

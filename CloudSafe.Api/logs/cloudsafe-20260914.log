@@ -27,3 +27,483 @@ WHERE n."UserId" = @__CurrentUserId_0 AND n."Status" = 0
 2026-09-14 10:58:26.795 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/fake_workplace_chart_data, Response status code: 404
 2026-09-14 10:58:26.797 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/project/notice, Response status code: 404
 2026-09-14 10:58:26.800 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/activities, Response status code: 404
+2026-09-14 10:58:27.834 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/fake_workplace_chart_data - null null
+2026-09-14 10:58:27.836 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/project/notice - null null
+2026-09-14 10:58:27.836 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/activities - null null
+2026-09-14 10:58:27.837 +07:00 [INF] HTTP GET /api/fake_workplace_chart_data responded 404 in 0.5930 ms
+2026-09-14 10:58:27.840 +07:00 [INF] HTTP GET /api/project/notice responded 404 in 0.5522 ms
+2026-09-14 10:58:27.842 +07:00 [INF] HTTP GET /api/activities responded 404 in 0.4817 ms
+2026-09-14 10:58:27.843 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/fake_workplace_chart_data - 404 0 null 9.864ms
+2026-09-14 10:58:27.845 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/project/notice - 404 0 null 9.3619ms
+2026-09-14 10:58:27.847 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/activities - 404 0 null 11.5595ms
+2026-09-14 10:58:27.851 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/fake_workplace_chart_data, Response status code: 404
+2026-09-14 10:58:27.853 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/project/notice, Response status code: 404
+2026-09-14 10:58:27.856 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/activities, Response status code: 404
+2026-09-14 10:58:28.426 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/tags - null null
+2026-09-14 10:58:28.430 +07:00 [INF] HTTP GET /api/tags responded 404 in 0.5825 ms
+2026-09-14 10:58:28.432 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/tags - 404 0 null 5.9361ms
+2026-09-14 10:58:28.436 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/tags, Response status code: 404
+2026-09-14 10:58:29.392 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/fake_analysis_chart_data - null null
+2026-09-14 10:58:29.395 +07:00 [INF] HTTP GET /api/fake_analysis_chart_data responded 404 in 0.3533 ms
+2026-09-14 10:58:29.396 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/fake_analysis_chart_data - 404 0 null 4.5611ms
+2026-09-14 10:58:29.400 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/fake_analysis_chart_data, Response status code: 404
+2026-09-14 10:58:30.415 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/fake_analysis_chart_data - null null
+2026-09-14 10:58:30.418 +07:00 [INF] HTTP GET /api/fake_analysis_chart_data responded 404 in 0.8714 ms
+2026-09-14 10:58:30.420 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/fake_analysis_chart_data - 404 0 null 5.5059ms
+2026-09-14 10:58:30.428 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/fake_analysis_chart_data, Response status code: 404
+2026-09-14 10:58:32.201 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/keys - null null
+2026-09-14 10:58:32.207 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api)'
+2026-09-14 10:58:32.214 +07:00 [INF] Route matched with {action = "List", controller = "Keys"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] List() on controller CloudSafe.Api.Controllers.KeysController (CloudSafe.Api).
+2026-09-14 10:58:32.251 +07:00 [INF] Executed DbCommand (12ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Algorithm", r."CreatedAt", r."KeySize", r."Name", r."OwnerId", r."PublicKeyFingerprint", r."PublicKeyPem", r."RevokedAt", r."Status"
+FROM "RsaKeyPairs" AS r
+WHERE r."OwnerId" = @__CurrentUserId_0
+ORDER BY r."CreatedAt" DESC
+2026-09-14 10:58:32.296 +07:00 [INF] Executed DbCommand (12ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT e."KeyPairId" AS "KeyId", count(*)::int AS "Count"
+FROM "EncryptedFiles" AS e
+WHERE e."OwnerId" = @__CurrentUserId_0
+GROUP BY e."KeyPairId"
+2026-09-14 10:58:32.302 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType21`2[[System.Collections.Generic.IEnumerable`1[[CloudSafe.Api.DTOs.KeyPairDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-09-14 10:58:32.330 +07:00 [INF] Executed action CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api) in 113.3873ms
+2026-09-14 10:58:32.332 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api)'
+2026-09-14 10:58:32.334 +07:00 [INF] HTTP GET /api/keys responded 200 in 128.3826 ms
+2026-09-14 10:58:32.336 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/keys - 200 null application/json; charset=utf-8 135.1931ms
+2026-09-14 11:18:58.079 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/rule?current=1&pageSize=20 - null null
+2026-09-14 11:18:58.089 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.RuleController.List (CloudSafe.Api)'
+2026-09-14 11:18:58.105 +07:00 [INF] Route matched with {action = "List", controller = "Rule"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] List(Int32, Int32, System.String) on controller CloudSafe.Api.Controllers.RuleController (CloudSafe.Api).
+2026-09-14 11:18:58.277 +07:00 [INF] Executed DbCommand (42ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "EncryptedFiles" AS e
+WHERE e."OwnerId" = @__CurrentUserId_0 AND e."Status" <> 2
+2026-09-14 11:18:58.397 +07:00 [INF] Executed DbCommand (15ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid), @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT e0."Id", e0."Algorithm", e0."AuthTag", e0."CreatedAt", e0."EncryptedAesKey", e0."FileSizeBytes", e0."Iv", e0."KeyPairId", e0."MimeType", e0."OriginalName", e0."OwnerId", e0."Status", e0."StoragePath", e0."UpdatedAt", u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM (
+    SELECT e."Id", e."Algorithm", e."AuthTag", e."CreatedAt", e."EncryptedAesKey", e."FileSizeBytes", e."Iv", e."KeyPairId", e."MimeType", e."OriginalName", e."OwnerId", e."Status", e."StoragePath", e."UpdatedAt"
+    FROM "EncryptedFiles" AS e
+    WHERE e."OwnerId" = @__CurrentUserId_0 AND e."Status" <> 2
+    ORDER BY e."CreatedAt" DESC
+    LIMIT @__p_2 OFFSET @__p_1
+) AS e0
+INNER JOIN "Users" AS u ON e0."OwnerId" = u."Id"
+ORDER BY e0."CreatedAt" DESC
+2026-09-14 11:18:58.416 +07:00 [INF] Executing OkObjectResult, writing value of type 'CloudSafe.Api.DTOs.TableListResult'.
+2026-09-14 11:18:58.428 +07:00 [INF] Executed action CloudSafe.Api.Controllers.RuleController.List (CloudSafe.Api) in 319.3848ms
+2026-09-14 11:18:58.430 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.RuleController.List (CloudSafe.Api)'
+2026-09-14 11:18:58.432 +07:00 [INF] HTTP GET /api/rule responded 200 in 346.9976 ms
+2026-09-14 11:18:58.435 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/rule?current=1&pageSize=20 - 200 null application/json; charset=utf-8 356.0178ms
+2026-09-14 11:19:01.075 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/fake_list_Detail?count=30 - null null
+2026-09-14 11:19:01.075 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUserDetail - null null
+2026-09-14 11:19:01.080 +07:00 [INF] HTTP GET /api/fake_list_Detail responded 404 in 0.5422 ms
+2026-09-14 11:19:01.083 +07:00 [INF] HTTP GET /api/currentUserDetail responded 404 in 0.5870 ms
+2026-09-14 11:19:01.085 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/fake_list_Detail?count=30 - 404 0 null 8.9332ms
+2026-09-14 11:19:01.090 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUserDetail - 404 0 null 14.5726ms
+2026-09-14 11:19:01.096 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/fake_list_Detail, Response status code: 404
+2026-09-14 11:19:01.101 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/currentUserDetail, Response status code: 404
+2026-09-14 11:19:02.101 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/fake_list_Detail?count=30 - null null
+2026-09-14 11:19:02.106 +07:00 [INF] HTTP GET /api/fake_list_Detail responded 404 in 0.4693 ms
+2026-09-14 11:19:02.109 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUserDetail - null null
+2026-09-14 11:19:02.110 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/fake_list_Detail?count=30 - 404 0 null 8.3795ms
+2026-09-14 11:19:02.114 +07:00 [INF] HTTP GET /api/currentUserDetail responded 404 in 0.7968 ms
+2026-09-14 11:19:02.119 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/fake_list_Detail, Response status code: 404
+2026-09-14 11:19:02.121 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUserDetail - 404 0 null 12.3217ms
+2026-09-14 11:19:02.129 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/currentUserDetail, Response status code: 404
+2026-09-14 11:30:19.149 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/fake_list_Detail?count=30 - null null
+2026-09-14 11:30:19.149 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUserDetail - null null
+2026-09-14 11:30:19.154 +07:00 [INF] HTTP GET /api/fake_list_Detail responded 404 in 0.8408 ms
+2026-09-14 11:30:19.157 +07:00 [INF] HTTP GET /api/currentUserDetail responded 404 in 0.5405 ms
+2026-09-14 11:30:19.159 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/fake_list_Detail?count=30 - 404 0 null 10.237ms
+2026-09-14 11:30:19.161 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUserDetail - 404 0 null 12.6902ms
+2026-09-14 11:30:19.166 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/fake_list_Detail, Response status code: 404
+2026-09-14 11:30:19.170 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/currentUserDetail, Response status code: 404
+2026-09-14 11:30:20.489 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUser - null null
+2026-09-14 11:30:20.493 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 11:30:20.495 +07:00 [INF] Route matched with {action = "GetCurrentUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCurrentUser() on controller CloudSafe.Api.Controllers.UserController (CloudSafe.Api).
+2026-09-14 11:30:20.676 +07:00 [INF] Executed DbCommand (37ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM "Users" AS u
+WHERE u."Id" = @__CurrentUserId_0
+LIMIT 1
+2026-09-14 11:30:20.706 +07:00 [INF] Executed DbCommand (10ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Notices" AS n
+WHERE n."UserId" = @__CurrentUserId_0 AND n."Status" = 0
+2026-09-14 11:30:20.717 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType7`1[[CloudSafe.Api.DTOs.CurrentUserDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-09-14 11:30:20.723 +07:00 [INF] Executed action CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api) in 224.934ms
+2026-09-14 11:30:20.725 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 11:30:20.727 +07:00 [INF] HTTP GET /api/currentUser responded 200 in 234.2289 ms
+2026-09-14 11:30:20.732 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUser - 200 null application/json; charset=utf-8 243.4052ms
+2026-09-14 11:30:21.271 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/fake_list_Detail?count=30 - null null
+2026-09-14 11:30:21.271 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUserDetail - null null
+2026-09-14 11:30:21.275 +07:00 [INF] HTTP GET /api/fake_list_Detail responded 404 in 0.6079 ms
+2026-09-14 11:30:21.279 +07:00 [INF] HTTP GET /api/currentUserDetail responded 404 in 0.4760 ms
+2026-09-14 11:30:21.280 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/fake_list_Detail?count=30 - 404 0 null 9.6727ms
+2026-09-14 11:30:21.283 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUserDetail - 404 0 null 12.0924ms
+2026-09-14 11:30:21.287 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/fake_list_Detail, Response status code: 404
+2026-09-14 11:30:21.291 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/currentUserDetail, Response status code: 404
+2026-09-14 11:30:22.336 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUserDetail - null null
+2026-09-14 11:30:22.336 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/fake_list_Detail?count=30 - null null
+2026-09-14 11:30:22.341 +07:00 [INF] HTTP GET /api/currentUserDetail responded 404 in 0.5587 ms
+2026-09-14 11:30:22.346 +07:00 [INF] HTTP GET /api/fake_list_Detail responded 404 in 0.5532 ms
+2026-09-14 11:30:22.348 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUserDetail - 404 0 null 12.9151ms
+2026-09-14 11:30:22.352 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/fake_list_Detail?count=30 - 404 0 null 16.0189ms
+2026-09-14 11:30:22.357 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/currentUserDetail, Response status code: 404
+2026-09-14 11:30:22.363 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/api/fake_list_Detail, Response status code: 404
+2026-09-14 11:30:23.465 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/keys - null null
+2026-09-14 11:30:23.469 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api)'
+2026-09-14 11:30:23.471 +07:00 [INF] Route matched with {action = "List", controller = "Keys"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] List() on controller CloudSafe.Api.Controllers.KeysController (CloudSafe.Api).
+2026-09-14 11:30:23.483 +07:00 [INF] Executed DbCommand (8ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Algorithm", r."CreatedAt", r."KeySize", r."Name", r."OwnerId", r."PublicKeyFingerprint", r."PublicKeyPem", r."RevokedAt", r."Status"
+FROM "RsaKeyPairs" AS r
+WHERE r."OwnerId" = @__CurrentUserId_0
+ORDER BY r."CreatedAt" DESC
+2026-09-14 11:30:23.497 +07:00 [INF] Executed DbCommand (9ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT e."KeyPairId" AS "KeyId", count(*)::int AS "Count"
+FROM "EncryptedFiles" AS e
+WHERE e."OwnerId" = @__CurrentUserId_0
+GROUP BY e."KeyPairId"
+2026-09-14 11:30:23.501 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType21`2[[System.Collections.Generic.IEnumerable`1[[CloudSafe.Api.DTOs.KeyPairDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-09-14 11:30:23.503 +07:00 [INF] Executed action CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api) in 29.4428ms
+2026-09-14 11:30:23.506 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api)'
+2026-09-14 11:30:23.507 +07:00 [INF] HTTP GET /api/keys responded 200 in 38.0221 ms
+2026-09-14 11:30:23.510 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/keys - 200 null application/json; charset=utf-8 45.5882ms
+2026-09-14 11:30:25.614 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/keys - null null
+2026-09-14 11:30:25.619 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api)'
+2026-09-14 11:30:25.620 +07:00 [INF] Route matched with {action = "List", controller = "Keys"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] List() on controller CloudSafe.Api.Controllers.KeysController (CloudSafe.Api).
+2026-09-14 11:30:25.627 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Algorithm", r."CreatedAt", r."KeySize", r."Name", r."OwnerId", r."PublicKeyFingerprint", r."PublicKeyPem", r."RevokedAt", r."Status"
+FROM "RsaKeyPairs" AS r
+WHERE r."OwnerId" = @__CurrentUserId_0
+ORDER BY r."CreatedAt" DESC
+2026-09-14 11:30:25.633 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT e."KeyPairId" AS "KeyId", count(*)::int AS "Count"
+FROM "EncryptedFiles" AS e
+WHERE e."OwnerId" = @__CurrentUserId_0
+GROUP BY e."KeyPairId"
+2026-09-14 11:30:25.637 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType21`2[[System.Collections.Generic.IEnumerable`1[[CloudSafe.Api.DTOs.KeyPairDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-09-14 11:30:25.639 +07:00 [INF] Executed action CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api) in 16.0791ms
+2026-09-14 11:30:25.641 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api)'
+2026-09-14 11:30:25.643 +07:00 [INF] HTTP GET /api/keys responded 200 in 24.4060 ms
+2026-09-14 11:30:25.645 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/keys - 200 null application/json; charset=utf-8 30.7492ms
+2026-09-14 11:30:27.274 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/files?current=1&pageSize=10 - null null
+2026-09-14 11:30:27.279 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.FilesController.List (CloudSafe.Api)'
+2026-09-14 11:30:27.287 +07:00 [INF] Route matched with {action = "List", controller = "Files"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] List(Int32, Int32, System.String, System.Nullable`1[System.Int32]) on controller CloudSafe.Api.Controllers.FilesController (CloudSafe.Api).
+2026-09-14 11:30:27.299 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "EncryptedFiles" AS e
+WHERE e."OwnerId" = @__CurrentUserId_0 AND e."Status" <> 2
+2026-09-14 11:30:27.305 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid), @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT e0."Id", e0."Algorithm", e0."AuthTag", e0."CreatedAt", e0."EncryptedAesKey", e0."FileSizeBytes", e0."Iv", e0."KeyPairId", e0."MimeType", e0."OriginalName", e0."OwnerId", e0."Status", e0."StoragePath", e0."UpdatedAt", u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM (
+    SELECT e."Id", e."Algorithm", e."AuthTag", e."CreatedAt", e."EncryptedAesKey", e."FileSizeBytes", e."Iv", e."KeyPairId", e."MimeType", e."OriginalName", e."OwnerId", e."Status", e."StoragePath", e."UpdatedAt"
+    FROM "EncryptedFiles" AS e
+    WHERE e."OwnerId" = @__CurrentUserId_0 AND e."Status" <> 2
+    ORDER BY e."CreatedAt" DESC
+    LIMIT @__p_2 OFFSET @__p_1
+) AS e0
+INNER JOIN "Users" AS u ON e0."OwnerId" = u."Id"
+ORDER BY e0."CreatedAt" DESC
+2026-09-14 11:30:27.310 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType17`3[[System.Collections.Generic.IEnumerable`1[[CloudSafe.Api.DTOs.FileDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-09-14 11:30:27.322 +07:00 [INF] Executed action CloudSafe.Api.Controllers.FilesController.List (CloudSafe.Api) in 31.7001ms
+2026-09-14 11:30:27.325 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.FilesController.List (CloudSafe.Api)'
+2026-09-14 11:30:27.327 +07:00 [INF] HTTP GET /api/files responded 200 in 47.7701 ms
+2026-09-14 11:30:27.330 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/files?current=1&pageSize=10 - 200 null application/json; charset=utf-8 55.6335ms
+2026-09-14 11:30:29.678 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/keys - null null
+2026-09-14 11:30:29.683 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api)'
+2026-09-14 11:30:29.685 +07:00 [INF] Route matched with {action = "List", controller = "Keys"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] List() on controller CloudSafe.Api.Controllers.KeysController (CloudSafe.Api).
+2026-09-14 11:30:29.691 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Algorithm", r."CreatedAt", r."KeySize", r."Name", r."OwnerId", r."PublicKeyFingerprint", r."PublicKeyPem", r."RevokedAt", r."Status"
+FROM "RsaKeyPairs" AS r
+WHERE r."OwnerId" = @__CurrentUserId_0
+ORDER BY r."CreatedAt" DESC
+2026-09-14 11:30:29.696 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT e."KeyPairId" AS "KeyId", count(*)::int AS "Count"
+FROM "EncryptedFiles" AS e
+WHERE e."OwnerId" = @__CurrentUserId_0
+GROUP BY e."KeyPairId"
+2026-09-14 11:30:29.699 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType21`2[[System.Collections.Generic.IEnumerable`1[[CloudSafe.Api.DTOs.KeyPairDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-09-14 11:30:29.701 +07:00 [INF] Executed action CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api) in 13.4586ms
+2026-09-14 11:30:29.703 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api)'
+2026-09-14 11:30:29.705 +07:00 [INF] HTTP GET /api/keys responded 200 in 22.0261 ms
+2026-09-14 11:30:29.708 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/keys - 200 null application/json; charset=utf-8 29.5466ms
+2026-09-14 11:38:49.476 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUser - null null
+2026-09-14 11:38:49.481 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 11:38:49.483 +07:00 [INF] Route matched with {action = "GetCurrentUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCurrentUser() on controller CloudSafe.Api.Controllers.UserController (CloudSafe.Api).
+2026-09-14 11:38:49.706 +07:00 [INF] Executed DbCommand (10ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM "Users" AS u
+WHERE u."Id" = @__CurrentUserId_0
+LIMIT 1
+2026-09-14 11:38:49.718 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Notices" AS n
+WHERE n."UserId" = @__CurrentUserId_0 AND n."Status" = 0
+2026-09-14 11:38:49.722 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType7`1[[CloudSafe.Api.DTOs.CurrentUserDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-09-14 11:38:49.729 +07:00 [INF] Executed action CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api) in 241.2827ms
+2026-09-14 11:38:49.740 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 11:38:49.744 +07:00 [INF] HTTP GET /api/currentUser responded 200 in 263.4818 ms
+2026-09-14 11:38:49.749 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUser - 200 null application/json; charset=utf-8 272.4354ms
+2026-09-14 11:38:50.613 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/keys - null null
+2026-09-14 11:38:50.618 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api)'
+2026-09-14 11:38:50.619 +07:00 [INF] Route matched with {action = "List", controller = "Keys"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] List() on controller CloudSafe.Api.Controllers.KeysController (CloudSafe.Api).
+2026-09-14 11:38:50.627 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Algorithm", r."CreatedAt", r."KeySize", r."Name", r."OwnerId", r."PublicKeyFingerprint", r."PublicKeyPem", r."RevokedAt", r."Status"
+FROM "RsaKeyPairs" AS r
+WHERE r."OwnerId" = @__CurrentUserId_0
+ORDER BY r."CreatedAt" DESC
+2026-09-14 11:38:50.636 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT e."KeyPairId" AS "KeyId", count(*)::int AS "Count"
+FROM "EncryptedFiles" AS e
+WHERE e."OwnerId" = @__CurrentUserId_0
+GROUP BY e."KeyPairId"
+2026-09-14 11:38:50.639 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType21`2[[System.Collections.Generic.IEnumerable`1[[CloudSafe.Api.DTOs.KeyPairDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-09-14 11:38:50.642 +07:00 [INF] Executed action CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api) in 19.6398ms
+2026-09-14 11:38:50.643 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api)'
+2026-09-14 11:38:50.645 +07:00 [INF] HTTP GET /api/keys responded 200 in 27.9510 ms
+2026-09-14 11:38:50.648 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/keys - 200 null application/json; charset=utf-8 34.7288ms
+2026-09-14 11:38:56.414 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/files?current=1&pageSize=10 - null null
+2026-09-14 11:38:56.419 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.FilesController.List (CloudSafe.Api)'
+2026-09-14 11:38:56.421 +07:00 [INF] Route matched with {action = "List", controller = "Files"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] List(Int32, Int32, System.String, System.Nullable`1[System.Int32]) on controller CloudSafe.Api.Controllers.FilesController (CloudSafe.Api).
+2026-09-14 11:38:56.428 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "EncryptedFiles" AS e
+WHERE e."OwnerId" = @__CurrentUserId_0 AND e."Status" <> 2
+2026-09-14 11:38:56.433 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid), @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT e0."Id", e0."Algorithm", e0."AuthTag", e0."CreatedAt", e0."EncryptedAesKey", e0."FileSizeBytes", e0."Iv", e0."KeyPairId", e0."MimeType", e0."OriginalName", e0."OwnerId", e0."Status", e0."StoragePath", e0."UpdatedAt", u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM (
+    SELECT e."Id", e."Algorithm", e."AuthTag", e."CreatedAt", e."EncryptedAesKey", e."FileSizeBytes", e."Iv", e."KeyPairId", e."MimeType", e."OriginalName", e."OwnerId", e."Status", e."StoragePath", e."UpdatedAt"
+    FROM "EncryptedFiles" AS e
+    WHERE e."OwnerId" = @__CurrentUserId_0 AND e."Status" <> 2
+    ORDER BY e."CreatedAt" DESC
+    LIMIT @__p_2 OFFSET @__p_1
+) AS e0
+INNER JOIN "Users" AS u ON e0."OwnerId" = u."Id"
+ORDER BY e0."CreatedAt" DESC
+2026-09-14 11:38:56.437 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType17`3[[System.Collections.Generic.IEnumerable`1[[CloudSafe.Api.DTOs.FileDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-09-14 11:38:56.440 +07:00 [INF] Executed action CloudSafe.Api.Controllers.FilesController.List (CloudSafe.Api) in 16.2617ms
+2026-09-14 11:38:56.441 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.FilesController.List (CloudSafe.Api)'
+2026-09-14 11:38:56.443 +07:00 [INF] HTTP GET /api/files responded 200 in 24.8053 ms
+2026-09-14 11:38:56.446 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/files?current=1&pageSize=10 - 200 null application/json; charset=utf-8 31.3702ms
+2026-09-14 11:38:56.804 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/keys - null null
+2026-09-14 11:38:56.809 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api)'
+2026-09-14 11:38:56.811 +07:00 [INF] Route matched with {action = "List", controller = "Keys"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] List() on controller CloudSafe.Api.Controllers.KeysController (CloudSafe.Api).
+2026-09-14 11:38:56.817 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Algorithm", r."CreatedAt", r."KeySize", r."Name", r."OwnerId", r."PublicKeyFingerprint", r."PublicKeyPem", r."RevokedAt", r."Status"
+FROM "RsaKeyPairs" AS r
+WHERE r."OwnerId" = @__CurrentUserId_0
+ORDER BY r."CreatedAt" DESC
+2026-09-14 11:38:56.822 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT e."KeyPairId" AS "KeyId", count(*)::int AS "Count"
+FROM "EncryptedFiles" AS e
+WHERE e."OwnerId" = @__CurrentUserId_0
+GROUP BY e."KeyPairId"
+2026-09-14 11:38:56.826 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType21`2[[System.Collections.Generic.IEnumerable`1[[CloudSafe.Api.DTOs.KeyPairDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-09-14 11:38:56.828 +07:00 [INF] Executed action CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api) in 14.3727ms
+2026-09-14 11:38:56.831 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.KeysController.List (CloudSafe.Api)'
+2026-09-14 11:38:56.832 +07:00 [INF] HTTP GET /api/keys responded 200 in 23.9023 ms
+2026-09-14 11:38:56.836 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/keys - 200 null application/json; charset=utf-8 31.8212ms
+2026-09-14 11:50:04.841 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUser - null null
+2026-09-14 11:50:04.845 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 11:50:04.847 +07:00 [INF] Route matched with {action = "GetCurrentUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCurrentUser() on controller CloudSafe.Api.Controllers.UserController (CloudSafe.Api).
+2026-09-14 11:50:04.946 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM "Users" AS u
+WHERE u."Id" = @__CurrentUserId_0
+LIMIT 1
+2026-09-14 11:50:04.955 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Notices" AS n
+WHERE n."UserId" = @__CurrentUserId_0 AND n."Status" = 0
+2026-09-14 11:50:04.960 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType7`1[[CloudSafe.Api.DTOs.CurrentUserDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-09-14 11:50:04.963 +07:00 [INF] Executed action CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api) in 113.2979ms
+2026-09-14 11:50:04.964 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 11:50:04.965 +07:00 [INF] HTTP GET /api/currentUser responded 200 in 121.2231 ms
+2026-09-14 11:50:04.968 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUser - 200 null application/json; charset=utf-8 127.7531ms
+2026-09-14 12:25:19.167 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUser - null null
+2026-09-14 12:25:19.173 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 12:25:19.177 +07:00 [INF] Route matched with {action = "GetCurrentUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCurrentUser() on controller CloudSafe.Api.Controllers.UserController (CloudSafe.Api).
+2026-09-14 12:25:19.273 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM "Users" AS u
+WHERE u."Id" = @__CurrentUserId_0
+LIMIT 1
+2026-09-14 12:25:19.282 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Notices" AS n
+WHERE n."UserId" = @__CurrentUserId_0 AND n."Status" = 0
+2026-09-14 12:25:19.286 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType7`1[[CloudSafe.Api.DTOs.CurrentUserDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-09-14 12:25:19.288 +07:00 [INF] Executed action CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api) in 105.492ms
+2026-09-14 12:25:19.289 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 12:25:19.291 +07:00 [INF] HTTP GET /api/currentUser responded 200 in 119.4873 ms
+2026-09-14 12:25:19.294 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUser - 200 null application/json; charset=utf-8 126.9956ms
+2026-09-14 12:26:06.310 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUser - null null
+2026-09-14 12:26:06.315 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 12:26:06.317 +07:00 [INF] Route matched with {action = "GetCurrentUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCurrentUser() on controller CloudSafe.Api.Controllers.UserController (CloudSafe.Api).
+2026-09-14 12:26:06.323 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM "Users" AS u
+WHERE u."Id" = @__CurrentUserId_0
+LIMIT 1
+2026-09-14 12:26:06.327 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Notices" AS n
+WHERE n."UserId" = @__CurrentUserId_0 AND n."Status" = 0
+2026-09-14 12:26:06.330 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType7`1[[CloudSafe.Api.DTOs.CurrentUserDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-09-14 12:26:06.332 +07:00 [INF] Executed action CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api) in 12.4631ms
+2026-09-14 12:26:06.334 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 12:26:06.335 +07:00 [INF] HTTP GET /api/currentUser responded 200 in 20.6962 ms
+2026-09-14 12:26:06.338 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUser - 200 null application/json; charset=utf-8 27.7233ms
+2026-09-14 12:26:07.309 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUser - null null
+2026-09-14 12:26:07.315 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 12:26:07.318 +07:00 [INF] Route matched with {action = "GetCurrentUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCurrentUser() on controller CloudSafe.Api.Controllers.UserController (CloudSafe.Api).
+2026-09-14 12:26:07.326 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM "Users" AS u
+WHERE u."Id" = @__CurrentUserId_0
+LIMIT 1
+2026-09-14 12:26:07.333 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Notices" AS n
+WHERE n."UserId" = @__CurrentUserId_0 AND n."Status" = 0
+2026-09-14 12:26:07.338 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType7`1[[CloudSafe.Api.DTOs.CurrentUserDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-09-14 12:26:07.346 +07:00 [INF] Executed action CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api) in 23.5691ms
+2026-09-14 12:26:07.350 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 12:26:07.352 +07:00 [INF] HTTP GET /api/currentUser responded 200 in 38.0521 ms
+2026-09-14 12:26:07.356 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUser - 200 null application/json; charset=utf-8 46.9334ms
+2026-09-14 12:26:15.300 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUser - null null
+2026-09-14 12:26:15.304 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 12:26:15.306 +07:00 [INF] Route matched with {action = "GetCurrentUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCurrentUser() on controller CloudSafe.Api.Controllers.UserController (CloudSafe.Api).
+2026-09-14 12:26:15.313 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM "Users" AS u
+WHERE u."Id" = @__CurrentUserId_0
+LIMIT 1
+2026-09-14 12:26:15.328 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Notices" AS n
+WHERE n."UserId" = @__CurrentUserId_0 AND n."Status" = 0
+2026-09-14 12:26:15.334 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType7`1[[CloudSafe.Api.DTOs.CurrentUserDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-09-14 12:26:15.337 +07:00 [INF] Executed action CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api) in 27.8951ms
+2026-09-14 12:26:15.339 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 12:26:15.344 +07:00 [INF] HTTP GET /api/currentUser responded 200 in 40.8191 ms
+2026-09-14 12:26:15.349 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUser - 200 null application/json; charset=utf-8 49.4996ms
+2026-09-14 12:26:15.616 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUser - null null
+2026-09-14 12:26:15.621 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 12:26:15.623 +07:00 [INF] Route matched with {action = "GetCurrentUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCurrentUser() on controller CloudSafe.Api.Controllers.UserController (CloudSafe.Api).
+2026-09-14 12:26:15.629 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM "Users" AS u
+WHERE u."Id" = @__CurrentUserId_0
+LIMIT 1
+2026-09-14 12:26:15.635 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Notices" AS n
+WHERE n."UserId" = @__CurrentUserId_0 AND n."Status" = 0
+2026-09-14 12:26:15.639 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType7`1[[CloudSafe.Api.DTOs.CurrentUserDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-09-14 12:26:15.645 +07:00 [INF] Executed action CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api) in 19.0754ms
+2026-09-14 12:26:15.649 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 12:26:15.651 +07:00 [INF] HTTP GET /api/currentUser responded 200 in 30.2823 ms
+2026-09-14 12:26:15.655 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUser - 200 null application/json; charset=utf-8 38.4425ms
+2026-09-14 12:27:45.565 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUser - null null
+2026-09-14 12:27:45.573 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 12:27:45.574 +07:00 [INF] Route matched with {action = "GetCurrentUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCurrentUser() on controller CloudSafe.Api.Controllers.UserController (CloudSafe.Api).
+2026-09-14 12:27:45.579 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM "Users" AS u
+WHERE u."Id" = @__CurrentUserId_0
+LIMIT 1
+2026-09-14 12:27:45.618 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Notices" AS n
+WHERE n."UserId" = @__CurrentUserId_0 AND n."Status" = 0
+2026-09-14 12:27:45.638 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType7`1[[CloudSafe.Api.DTOs.CurrentUserDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-09-14 12:27:45.642 +07:00 [INF] Executed action CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api) in 66.2257ms
+2026-09-14 12:27:45.645 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 12:27:45.647 +07:00 [INF] HTTP GET /api/currentUser responded 200 in 75.2121 ms
+2026-09-14 12:27:45.658 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUser - 200 null application/json; charset=utf-8 92.2653ms
+2026-09-14 12:27:45.666 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUser - null null
+2026-09-14 12:27:45.671 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 12:27:45.676 +07:00 [INF] Route matched with {action = "GetCurrentUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCurrentUser() on controller CloudSafe.Api.Controllers.UserController (CloudSafe.Api).
+2026-09-14 12:27:45.681 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM "Users" AS u
+WHERE u."Id" = @__CurrentUserId_0
+LIMIT 1
+2026-09-14 12:27:45.695 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Notices" AS n
+WHERE n."UserId" = @__CurrentUserId_0 AND n."Status" = 0
+2026-09-14 12:27:45.700 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType7`1[[CloudSafe.Api.DTOs.CurrentUserDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-09-14 12:27:45.706 +07:00 [INF] Executed action CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api) in 27.6222ms
+2026-09-14 12:27:45.714 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 12:27:45.728 +07:00 [INF] HTTP GET /api/currentUser responded 200 in 57.0409 ms
+2026-09-14 12:27:45.733 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUser - 200 null application/json; charset=utf-8 66.566ms
+2026-09-14 13:12:00.481 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUser - null null
+2026-09-14 13:12:00.486 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 13:12:00.488 +07:00 [INF] Route matched with {action = "GetCurrentUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCurrentUser() on controller CloudSafe.Api.Controllers.UserController (CloudSafe.Api).
+2026-09-14 13:12:00.612 +07:00 [INF] Executed DbCommand (27ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM "Users" AS u
+WHERE u."Id" = @__CurrentUserId_0
+LIMIT 1
+2026-09-14 13:12:00.627 +07:00 [INF] Executed DbCommand (9ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Notices" AS n
+WHERE n."UserId" = @__CurrentUserId_0 AND n."Status" = 0
+2026-09-14 13:12:00.630 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType7`1[[CloudSafe.Api.DTOs.CurrentUserDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-09-14 13:12:00.632 +07:00 [INF] Executed action CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api) in 142.7292ms
+2026-09-14 13:12:00.633 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 13:12:00.635 +07:00 [INF] HTTP GET /api/currentUser responded 200 in 149.7263 ms
+2026-09-14 13:12:00.637 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUser - 200 null application/json; charset=utf-8 156.2904ms
+2026-09-14 13:12:00.664 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUser - null null
+2026-09-14 13:12:00.689 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 13:12:00.705 +07:00 [INF] Route matched with {action = "GetCurrentUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCurrentUser() on controller CloudSafe.Api.Controllers.UserController (CloudSafe.Api).
+2026-09-14 13:12:00.714 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM "Users" AS u
+WHERE u."Id" = @__CurrentUserId_0
+LIMIT 1
+2026-09-14 13:12:00.756 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Notices" AS n
+WHERE n."UserId" = @__CurrentUserId_0 AND n."Status" = 0
+2026-09-14 13:12:00.759 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType7`1[[CloudSafe.Api.DTOs.CurrentUserDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-09-14 13:12:00.761 +07:00 [INF] Executed action CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api) in 52.2991ms
+2026-09-14 13:12:00.763 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 13:12:00.764 +07:00 [INF] HTTP GET /api/currentUser responded 200 in 75.3328 ms
+2026-09-14 13:12:00.788 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUser - 200 null application/json; charset=utf-8 123.945ms
+2026-09-14 14:25:48.885 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUser - null null
+2026-09-14 14:25:48.888 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 14:25:48.889 +07:00 [INF] Route matched with {action = "GetCurrentUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCurrentUser() on controller CloudSafe.Api.Controllers.UserController (CloudSafe.Api).
+2026-09-14 14:25:49.013 +07:00 [INF] Executed DbCommand (31ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM "Users" AS u
+WHERE u."Id" = @__CurrentUserId_0
+LIMIT 1
+2026-09-14 14:25:49.041 +07:00 [INF] Executed DbCommand (14ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Notices" AS n
+WHERE n."UserId" = @__CurrentUserId_0 AND n."Status" = 0
+2026-09-14 14:25:49.044 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType7`1[[CloudSafe.Api.DTOs.CurrentUserDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-09-14 14:25:49.047 +07:00 [INF] Executed action CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api) in 154.9798ms
+2026-09-14 14:25:49.050 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 14:25:49.051 +07:00 [INF] HTTP GET /api/currentUser responded 200 in 163.9176 ms
+2026-09-14 14:25:49.056 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUser - 200 null application/json; charset=utf-8 170.8335ms
+2026-09-14 14:25:49.079 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/currentUser - null null
+2026-09-14 14:25:49.127 +07:00 [INF] Executing endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 14:25:49.152 +07:00 [INF] Route matched with {action = "GetCurrentUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCurrentUser() on controller CloudSafe.Api.Controllers.UserController (CloudSafe.Api).
+2026-09-14 14:25:49.163 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Address", u."Avatar", u."CreatedAt", u."Email", u."Group", u."Name", u."PasswordHash", u."Phone", u."Role", u."Signature", u."Title", u."UpdatedAt", u."Username"
+FROM "Users" AS u
+WHERE u."Id" = @__CurrentUserId_0
+LIMIT 1
+2026-09-14 14:25:49.168 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__CurrentUserId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Notices" AS n
+WHERE n."UserId" = @__CurrentUserId_0 AND n."Status" = 0
+2026-09-14 14:25:49.171 +07:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType7`1[[CloudSafe.Api.DTOs.CurrentUserDto, CloudSafe.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-09-14 14:25:49.173 +07:00 [INF] Executed action CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api) in 11.5789ms
+2026-09-14 14:25:49.188 +07:00 [INF] Executed endpoint 'CloudSafe.Api.Controllers.UserController.GetCurrentUser (CloudSafe.Api)'
+2026-09-14 14:25:49.190 +07:00 [INF] HTTP GET /api/currentUser responded 200 in 62.6030 ms
+2026-09-14 14:25:49.191 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/currentUser - 200 null application/json; charset=utf-8 112.106ms
+2026-09-14 14:42:17.304 +07:00 [INF] Application is shutting down...
